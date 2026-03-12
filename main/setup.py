@@ -619,6 +619,20 @@ class BuildExt(build_ext):
             ext.extra_link_args = link_opts
         build_ext.build_extensions(self)
 
+    def build_extension(self, ext):
+        # Avoid object file collisions between exudynCPP, exudynCPPfast and
+        # exudynCPPnoAVX on Windows: all three extensions compile the same
+        # sources, but with different macros. Reusing one temp directory causes
+        # sporadic file locking issues once LTCG (/GL) is enabled.
+        original_build_temp = self.build_temp
+        sanitized_name = ext.name.replace('.', os.sep)
+        self.build_temp = os.path.join(original_build_temp, sanitized_name)
+        os.makedirs(self.build_temp, exist_ok=True)
+        try:
+            super().build_extension(ext)
+        finally:
+            self.build_temp = original_build_temp
+
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++
 #parallel compile, works for linux:
 # http://stackoverflow.com/a/13176803

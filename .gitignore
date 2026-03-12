@@ -1,2 +1,36 @@
 build/
 local/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+*.egg-info/
+.eggs/
+*.egg
+dist/
+
+# Sphinx documentation
+_build/
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# C++ build artifacts
+*.obj
+*.exe
+*.pdb
+
+# Other
+*.log
+*.tmp
+.env
